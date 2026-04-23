@@ -1,0 +1,530 @@
+
+<h2 class="sr-only">Guía interactiva de estudio — Programación I CS6002 UTEC</h2>
+<style>
+.g-wrap{padding:1rem 0}
+.g-tabs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1.25rem}
+.g-tab{padding:5px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);line-height:1.4}
+.g-tab.on{background:var(--color-background-info);color:var(--color-text-info);border-color:var(--color-border-info);font-weight:500}
+.g-tab:hover:not(.on){background:var(--color-background-secondary)}
+.g-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:0.875rem}
+.g-label{font-size:11px;font-weight:500;letter-spacing:.06em;color:var(--color-text-secondary);text-transform:uppercase;margin:0 0 0.75rem}
+.g-theory{font-size:14px;line-height:1.75;color:var(--color-text-primary)}
+.g-theory p{margin:0 0 0.5rem}
+.g-pre{font-family:var(--font-mono);font-size:12.5px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.875rem 1rem;overflow-x:auto;line-height:1.65;margin:.5rem 0;white-space:pre}
+.g-trick{border-left:2.5px solid;border-color:var(--color-border-warning);border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.625rem 1rem;background:var(--color-background-warning);margin-bottom:.5rem;font-size:13.5px;line-height:1.6;color:var(--color-text-warning)}
+.g-exbox{background:var(--color-background-secondary);border-left:3px solid;border-color:var(--color-border-info);border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:1rem 1.125rem;margin-bottom:.875rem;font-size:14.5px;line-height:1.7;color:var(--color-text-primary)}
+.g-btns{display:flex;gap:8px;flex-wrap:wrap}
+.g-sol{margin-top:1.125rem}
+.g-steps{margin:0.875rem 0 0}
+.g-step{display:flex;gap:9px;align-items:flex-start;margin-bottom:.625rem}
+.g-num{min-width:20px;height:20px;border-radius:50%;background:var(--color-background-info);color:var(--color-text-info);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.g-stxt{font-size:13.5px;line-height:1.65;color:var(--color-text-primary)}
+.g-stxt code{font-family:var(--font-mono);font-size:12px}
+.g-out{background:var(--color-background-success);border-radius:var(--border-radius-md);padding:.625rem .875rem;margin-top:.75rem;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--color-text-success);font-weight:500}
+.g-out code{font-family:var(--font-mono);font-size:12px;color:var(--color-text-success)}
+.g-prog{height:3px;background:var(--color-border-tertiary);border-radius:2px;margin-bottom:1.25rem;overflow:hidden}
+.g-fill{height:100%;border-radius:2px;background:var(--color-text-info);transition:width .35s ease}
+.g-slabel{font-size:11px;font-weight:500;letter-spacing:.06em;color:var(--color-text-secondary);text-transform:uppercase;margin:1rem 0 .5rem}
+</style>
+
+<div class="g-wrap">
+<div class="g-prog"><div class="g-fill" id="gprog" style="width:12%"></div></div>
+<div class="g-tabs" id="gtabs"></div>
+<div id="gcontent"></div>
+</div>
+
+<script>
+function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+
+const TOPICS=[
+{id:0,lbl:"📦 Variables & Tipos",sub:"Sem 01",
+theory:`<p>Todo dato en Python tiene un <strong>tipo</strong>. Las variables son nombres que apuntan a valores — Python tipifica dinámicamente, no declaras el tipo.</p>
+<div class="g-pre">entero  = 42          # int
+decimal = 3.14        # float
+texto   = "Hola"      # str
+bandera = True        # bool
+
+print(type(entero))   # &lt;class 'int'&gt;</div>
+<p style="margin-top:.75rem"><strong>Conversiones:</strong></p>
+<div class="g-pre">int("5")       → 5      |  float("3.14") → 3.14
+str(42)        → "42"   |  bool(0)       → False</div>
+<p style="margin-top:.75rem"><strong>Operadores aritméticos:</strong></p>
+<div class="g-pre">+  suma      10+3=13   |  //  div entera  10//3=3
+-  resta     10-3=7    |  %   módulo     10%3=1
+*  mult      10*3=30   |  **  potencia   10**3=1000
+/  división  10/3=3.33</div>`,
+tricks:["<code>input()</code> siempre devuelve <code>str</code>. Envuelve con <code>int(input(...))</code> si necesitas número.","f-strings: <code>f\"Hola {nombre}, tienes {edad} años\"</code> — más limpio que concatenar con <code>+</code>.","<code>//</code> y <code>%</code> son tu herramienta para descomponer números: extraer dígitos, convertir segundos a días, distribuir en cajas."],
+gen(){
+const ops=[
+()=>{
+  const w=ri(40,120),h=ri(150,200);
+  const imc=(w/(h/100)**2);
+  return{
+    q:`Recibe peso en kg (${w}) y altura en cm (${h}). Calcula e imprime el IMC con 3 decimales.`,
+    code:`peso_kg = ${w}\naltura_cm = ${h}\naltura_m = altura_cm / 100\nBMI = peso_kg / (altura_m ** 2)\nprint(round(BMI, 3))`,
+    steps:[`Convierte altura: <code>${h} / 100 = ${h/100}</code> m`,`Calcula: <code>${w} / (${h/100} ** 2) = ${w/(h/100)**2}</code>`,`<code>round(${imc.toFixed(6)}, 3)</code> → <code>${imc.toFixed(3)}</code>`,`Salida: <strong>${imc.toFixed(3)}</strong>`],
+    out:imc.toFixed(3)
+  };
+},
+()=>{
+  const x1=ri(1,8),y1=ri(1,8),x2=ri(10,18),y2=ri(10,18);
+  const dist=Math.sqrt((x2-x1)**2+(y2-y1)**2);
+  return{
+    q:`Calcula la distancia entre (${x1}, ${y1}) y (${x2}, ${y2}). Usa <code>from math import sqrt</code>.`,
+    code:`from math import sqrt\nx1, y1 = ${x1}, ${y1}\nx2, y2 = ${x2}, ${y2}\ndist = sqrt((x2-x1)**2 + (y2-y1)**2)\nprint(round(dist, 3))`,
+    steps:[`dx = ${x2}-${x1} = ${x2-x1}, dy = ${y2}-${y1} = ${y2-y1}`,`d² = <code>${x2-x1}² + ${y2-y1}² = ${(x2-x1)**2} + ${(y2-y1)**2} = ${(x2-x1)**2+(y2-y1)**2}</code>`,`<code>sqrt(${(x2-x1)**2+(y2-y1)**2}) ≈ ${dist.toFixed(3)}</code>`,`Salida: <strong>${dist.toFixed(3)}</strong>`],
+    out:dist.toFixed(3)
+  };
+},
+()=>{
+  const n=ri(100,999);
+  const d1=n%10,rest=Math.floor(n/10),d2=rest%10,d3=Math.floor(rest/10);
+  const inv=d1*100+d2*10+d3;
+  return{
+    q:`Dado ${n} (3 cifras), extrae sus dígitos con <code>%</code> y <code>//</code> e imprime el número invertido.`,
+    code:`num = ${n}\nd1 = num % 10       # ${d1}  ← último dígito\nnum = num // 10     # ${rest}\nd2 = num % 10       # ${d2}  ← dígito medio\nd3 = num // 10      # ${d3}  ← primer dígito\nprint(d1*100 + d2*10 + d3)`,
+    steps:[`<code>${n} % 10 = ${d1}</code> → dígito de las unidades`,`<code>${n} // 10 = ${rest}</code>, luego <code>${rest} % 10 = ${d2}</code> → dígito medio`,`<code>${rest} // 10 = ${d3}</code> → dígito de las centenas`,`Invertido: <code>${d1}×100 + ${d2}×10 + ${d3} = ${inv}</code>`],
+    out:String(inv)
+  };
+}];
+return ops[ri(0,ops.length-1)]();
+}},
+{id:1,lbl:"🔢 Operadores & Lógica",sub:"Sem 02",
+theory:`<p>El truco del Lab 2: resolver condiciones <strong>sin usar <code>if</code></strong>. En Python: <code>True == 1</code> y <code>False == 0</code>.</p>
+<div class="g-pre"># Par o impar SIN if
+num = 7
+es_par = num % 2 == 0        # False → 0
+print(es_par * "Es par")      # ""
+print((not es_par) * "Es impar")  # "Es impar"</div>
+<p style="margin-top:.75rem"><strong>Operadores de relación:</strong> <code>== != &lt; &gt; &lt;= &gt;=</code> → devuelven <code>bool</code>.</p>
+<div class="g-pre">and  → True si AMBOS son True
+or   → True si AL MENOS UNO es True
+not  → invierte el booleano</div>
+<p style="margin-top:.75rem"><strong>Desigualdad triangular:</strong></p>
+<div class="g-pre">es_tri = s1+s2>s3 and s2+s3>s1 and s1+s3>s2</div>`,
+tricks:["Multiplicar bool × string: <code>True * 'texto' = 'texto'</code>, <code>False * 'texto' = ''</code>. Así reemplazas el <code>if</code>.","Para tarifa con 2 ramas sin if: calcula ambas tarifas y multiplica cada una por su condición booleana. Suma los dos productos.","<code>and</code> y <code>or</code> son lazy: Python para de evaluar en cuanto sabe el resultado (short-circuit)."],
+gen(){
+const ops=[
+()=>{
+  const edad=ri(10,70);const mayor=edad>=18;
+  return{
+    q:`Sin usar <code>if</code>, muestra "Es mayor de edad" o "Es menor de edad" para la edad ${edad}.`,
+    code:`edad = ${edad}\nes_mayor = edad >= 18    # ${mayor}\nprint(es_mayor * "Es mayor de edad")\nprint((not es_mayor) * "Es menor de edad")`,
+    steps:[`<code>${edad} >= 18</code> → <code>${mayor}</code>`,`<code>${mayor} * "Es mayor de edad"</code> → <code>"${mayor?'Es mayor de edad':''}"</code>`,`<code>${!mayor} * "Es menor de edad"</code> → <code>"${!mayor?'Es menor de edad':''}"</code>`,`Salida: <strong>${mayor?'Es mayor de edad':'Es menor de edad'}</strong>`],
+    out:mayor?'Es mayor de edad':'Es menor de edad'
+  };
+},
+()=>{
+  const kw=ri(50,200);const esM=kw<100;
+  const c=esM?kw*0.4522:45.22+(kw-100)*0.7;
+  return{
+    q:`Tarifa eléctrica sin <code>if</code>. Consumo: ${kw} kW. Si kW &lt; 100 → costo = kW × 0.4522. Si kW ≥ 100 → costo = 45.22 + (kW−100) × 0.7.`,
+    code:`kw = ${kw}\nes_menor = kw < 100          # ${esM}\nes_mayor = kw >= 100         # ${!esM}\ncosto1 = kw * 0.4522\ncosto2 = 45.22 + (kw-100)*0.7\nresultado = es_menor * costo1 + es_mayor * costo2\nprint(round(resultado, 4))`,
+    steps:[`<code>${kw} < 100</code> → <code>${esM}</code> (valor numérico: ${esM?1:0})`,`costo1 = <code>${kw} × 0.4522 = ${(kw*0.4522).toFixed(4)}</code>`,`costo2 = <code>45.22 + (${kw}−100)×0.7 = ${(45.22+(kw-100)*0.7).toFixed(4)}</code>`,`Resultado: <code>${esM?1:0}×${(kw*0.4522).toFixed(2)} + ${esM?0:1}×${(45.22+(kw-100)*0.7).toFixed(2)} = ${c.toFixed(4)}</code>`],
+    out:c.toFixed(4)
+  };
+},
+()=>{
+  const s1=ri(2,10),s2=ri(2,10),s3=ri(2,10);
+  const v=s1+s2>s3&&s2+s3>s1&&s1+s3>s2;
+  return{
+    q:`Sin <code>if</code>, verifica si los lados ${s1}, ${s2}, ${s3} forman un triángulo válido (desigualdad triangular).`,
+    code:`s1, s2, s3 = ${s1}, ${s2}, ${s3}\nes_tri = s1+s2>s3 and s2+s3>s1 and s1+s3>s2  # ${v}\nprint(es_tri * "VALIDO")\nprint((not es_tri) * "NO VALIDO")`,
+    steps:[`<code>${s1}+${s2}>${s3}</code> → ${s1+s2}>${s3} → ${s1+s2>s3}`,`<code>${s2}+${s3}>${s1}</code> → ${s2+s3}>${s1} → ${s2+s3>s1}`,`<code>${s1}+${s3}>${s2}</code> → ${s1+s3}>${s2} → ${s1+s3>s2}`,`<code>${v}</code> → salida: <strong>${v?'VALIDO':'NO VALIDO'}</strong>`],
+    out:v?'VALIDO':'NO VALIDO'
+  };
+}];
+return ops[ri(0,ops.length-1)]();
+}},
+{id:2,lbl:"🔀 if/elif y Funciones",sub:"Sem 03",
+theory:`<p>Las funciones son bloques reutilizables definidos con <code>def</code>. Siempre retornan algo con <code>return</code> (o <code>None</code> si no hay return).</p>
+<div class="g-pre">def hallaPrecio(edad: int) -> int:
+    if   0  &lt;= edad &lt;= 17: return 15
+    elif 18 &lt;= edad &lt;= 30: return 25
+    elif 31 &lt;= edad &lt;= 45: return 30
+    elif edad >= 46:       return 10</div>
+<p style="margin-top:.75rem"><strong>Estructura if/elif/else:</strong></p>
+<div class="g-pre">if condicion1:
+    # bloque 1
+elif condicion2:
+    # bloque 2
+else:
+    # por defecto</div>
+<p style="margin-top:.75rem"><strong>Longitud de arco (Tarea Lab 1):</strong></p>
+<div class="g-pre">import math
+def longitudArco(radio, angulo):
+    return radio * angulo * math.pi / 180</div>`,
+tricks:["<code>elif</code> evita else anidados: más legible, mismo resultado.","Puedes comparar rangos directamente: <code>18 &lt;= edad &lt;= 30</code> es válido en Python (no en C/Java).","Las funciones deben hacer UNA cosa sola. Si la función se llama <code>hallaPrecio</code>, solo halla el precio."],
+gen(){
+const ops=[
+()=>{
+  const nota=parseFloat((Math.random()*20).toFixed(1));
+  const res=nota>=10.5?"Aprobó":"No aprobó";
+  return{
+    q:`Escribe <code>verificarNota(nota)</code> que retorne "Aprobó" si nota ≥ 10.5, sino "No aprobó". Prueba con <code>${nota}</code>.`,
+    code:`def verificarNota(nota):\n    if nota >= 10.5:\n        return "Aprobó"\n    else:\n        return "No aprobó"\n\nprint(verificarNota(${nota}))  # ${res}`,
+    steps:[`Se llama con <code>${nota}</code>`,`<code>${nota} >= 10.5</code> → <code>${nota>=10.5}</code>`,`El <code>${nota>=10.5?'if':'else'}</code> ejecuta → retorna <code>"${res}"</code>`,`Salida: <strong>${res}</strong>`],
+    out:res
+  };
+},
+()=>{
+  const edad=ri(5,70);
+  let p,rango;
+  if(edad<=17){p=15;rango="0–17"}else if(edad<=30){p=25;rango="18–30"}else if(edad<=45){p=30;rango="31–45"}else{p=10;rango="46+"}
+  return{
+    q:`Escribe <code>hallaPrecio(edad)</code>: 0-17→S/15, 18-30→S/25, 31-45→S/30, 46+→S/10. Prueba con edad = ${edad}.`,
+    code:`def hallaPrecio(edad: int) -> int:\n    if   0  <= edad <= 17: return 15\n    elif 18 <= edad <= 30: return 25\n    elif 31 <= edad <= 45: return 30\n    elif edad >= 46:       return 10\n\nprint(hallaPrecio(${edad}))  # ${p}`,
+    steps:[`edad = <code>${edad}</code>`,`¿0 ≤ ${edad} ≤ 17? → ${edad<=17}`,edad<=17?`Condición cumplida → retorna <code>15</code>`:`¿18 ≤ ${edad} ≤ 30? → ${edad<=30}`,`Rango ${rango} → precio: <strong>S/${p}</strong>`],
+    out:String(p)
+  };
+},
+()=>{
+  const r=parseFloat((Math.random()*10+1).toFixed(2));
+  const ang=ri(30,270);
+  const L=r*ang*Math.PI/180;
+  return{
+    q:`Escribe <code>longitudArco(radio, angulo)</code>. Fórmula: L = r × θ × π / 180. Prueba con radio=${r}, ángulo=${ang}°.`,
+    code:`import math\ndef longitudArco(radio: float, angulo: float) -> float:\n    L = radio * angulo * math.pi / 180\n    return L\n\nprint(round(longitudArco(${r}, ${ang}), 4))`,
+    steps:[`<code>L = ${r} × ${ang} × π / 180</code>`,`<code>= ${r} × ${ang} × 3.14159... / 180</code>`,`<code>= ${(r*ang*Math.PI/180).toFixed(6)}</code>`,`Redondeado a 4 cifras: <strong>${L.toFixed(4)}</strong>`],
+    out:L.toFixed(4)
+  };
+}];
+return ops[ri(0,ops.length-1)]();
+}},
+{id:3,lbl:"🔁 Bucle while",sub:"Sem 04",
+theory:`<p><code>while</code> repite un bloque <strong>mientras</strong> la condición sea verdadera. El patrón del profe usa siempre una variable <code>iterator</code>:</p>
+<div class="g-pre">iterator = 1
+while iterator <= 15:
+    print(f"7 x {iterator} = {7*iterator}")
+    iterator += 1</div>
+<p style="margin-top:.75rem"><strong>Factorial:</strong></p>
+<div class="g-pre">def hallarFactorial(num: int) -> int:
+    producto = 1
+    while num >= 2:
+        producto *= num
+        num -= 1
+    return producto</div>
+<p style="margin-top:.75rem"><strong>Número primo O(√n) — versión optimizada Bonus:</strong></p>
+<div class="g-pre">def esPrimo(numero: int) -> str:
+    is_prime = True
+    iterator = 2
+    while iterator * iterator &lt;= numero:
+        if numero % iterator == 0:
+            is_prime = False
+        iterator += 1
+    return "Es primo" if is_prime else "No es primo"</div>`,
+tricks:["Para <code>esPrimo</code> O(√n): si n tiene factor &gt; √n, su complemento es &lt; √n y ya lo habríamos visto.","Número perfecto Bonus: empieza <code>suma = 1</code> e itera desde 2. Añade el par de divisores si <code>i × i != n</code>.","Validar entrada: <code>while n &lt; 1 or 500 &lt; n: n = int(input(...))</code> — patrón del ejercicio TicTac del profe."],
+gen(){
+const isPrime=n=>{if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i===0)return false;return true};
+const ops=[
+()=>{
+  const n=ri(3,12);
+  let f=1;for(let i=n;i>=2;i--)f*=i;
+  const steps_str=Array.from({length:n},(_,i)=>n-i).slice(0,n-1).join(' × ')+" × 1";
+  return{
+    q:`Escribe <code>hallarFactorial(${n})</code> usando <code>while</code>. Calcula ${n}!`,
+    code:`def hallarFactorial(num: int) -> int:\n    producto = 1\n    while num >= 2:\n        producto *= num\n        num -= 1\n    return producto\n\nprint(hallarFactorial(${n}))  # ${f}`,
+    steps:[`Empieza: <code>producto = 1, num = ${n}</code>`,`Multiplica: <code>${steps_str}</code>`,`En cada iteración: num decrementa de ${n} hasta 2`,`Resultado: <code>${n}! = ${f}</code>`],
+    out:String(f)
+  };
+},
+()=>{
+  const pool=[2,3,5,7,11,13,17,19,23,4,6,8,9,10,12,14,15,16,18,20,21,25,49];
+  const n=pool[ri(0,pool.length-1)];
+  const prime=isPrime(n);
+  const sqrtN=Math.floor(Math.sqrt(n));
+  const divisors=[];for(let i=2;i<=sqrtN;i++)if(n%i===0)divisors.push(i);
+  return{
+    q:`Escribe <code>esPrimo(${n})</code> con la versión O(√n) del Bonus. Solo revisa divisores hasta √${n} ≈ ${Math.sqrt(n).toFixed(2)}.`,
+    code:`def esPrimo(numero: int) -> str:\n    is_prime = True\n    iterator = 2\n    while iterator * iterator <= numero:\n        if numero % iterator == 0:\n            is_prime = False\n        iterator += 1\n    return "Es primo" if is_prime else "No es primo"\n\nprint(esPrimo(${n}))`,
+    steps:[`√${n} ≈ ${Math.sqrt(n).toFixed(2)} → revisamos solo divisores de 2 a ${sqrtN}`,divisors.length===0?`No se encontró ningún divisor entero`:`Divisores encontrados: ${divisors.join(', ')} → <code>is_prime = False</code>`,`<code>is_prime = ${prime}</code>`,`Resultado: <strong>${prime?"Es primo":"No es primo"}</strong>`],
+    out:prime?"Es primo":"No es primo"
+  };
+},
+()=>{
+  const perfects=[6,28,496];const notP=[5,7,8,10,12,15,20,24];
+  const useP=Math.random()>.45;
+  const n=useP?perfects[ri(0,perfects.length-1)]:notP[ri(0,notP.length-1)];
+  let suma=1,divs=[1];
+  for(let i=2;i*i<=n;i++){if(n%i===0){suma+=i;divs.push(i);if(i!==n/i){suma+=n/i;divs.push(n/i);}}}
+  const esPerfecto=suma===n&&n!==1;
+  return{
+    q:`Escribe <code>esPerfecto(${n})</code> O(√n). Los divisores propios de ${n} deben sumar exactamente ${n}.`,
+    code:`def esPerfecto(numero: int) -> str:\n    suma = 1\n    iterator = 2\n    while iterator * iterator <= numero:\n        if numero % iterator == 0:\n            suma += iterator\n            if iterator != numero // iterator:\n                suma += numero // iterator\n        iterator += 1\n    if suma == numero and numero != 1:\n        return "Es perfecto"\n    return "No es perfecto"\n\nprint(esPerfecto(${n}))`,
+    steps:[`Divisores propios de ${n}: ${divs.sort((a,b)=>a-b).join(' + ')} = ${suma}`,`¿${suma} == ${n}? → ${suma===n}`,`Resultado: <strong>${esPerfecto?"Es perfecto":"No es perfecto"}</strong>`,esPerfecto?`${n} es perfecto. Los 4 primeros: 6, 28, 496, 8128`:`${n} no es perfecto. Revisa: divisores propios de 6 son 1+2+3=6`],
+    out:esPerfecto?"Es perfecto":"No es perfecto"
+  };
+}];
+return ops[ri(0,ops.length-1)]();
+}},
+{id:4,lbl:"🧩 Funciones & Scope",sub:"Sem 05",
+theory:`<p><strong>Modularización:</strong> cada función hace UNA sola cosa. Compón funciones para resolver problemas complejos.</p>
+<div class="g-pre">def es_primo(n: int) -> bool:
+    """Retorna True si n es primo."""
+    if n < 2: return False
+    i = 2
+    while i * i <= n:
+        if n % i == 0: return False
+        i += 1
+    return True
+
+def primos_en_rango(a: int, b: int) -> list:
+    """Lista de primos entre a y b."""
+    return [n for n in range(a, b+1) if es_primo(n)]</div>
+<p style="margin-top:.75rem"><strong>Scope:</strong> variable definida dentro de función NO existe afuera.</p>
+<div class="g-pre">def suma(a, b):
+    resultado = a + b   # solo vive aquí
+    return resultado    # esto SÍ sale afuera</div>`,
+tricks:["Si tu función necesita <code>if</code> muy anidados, probablemente deba dividirse.","Usa <code>-> tipo</code> en la firma: <code>def es_par(n: int) -> bool:</code> — documenta qué retorna.","El docstring va justo debajo del <code>def</code>: <code>\"\"\"Retorna True si n es par.\"\"\"</code> — la profe lo pide en las evaluaciones."],
+gen(){
+const isPrime=n=>{if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i===0)return false;return true};
+const ops=[
+()=>{
+  const a=ri(2,25),b=ri(a+5,a+35);
+  const primes=[];for(let i=a;i<=b;i++)if(isPrime(i))primes.push(i);
+  return{
+    q:`Escribe <code>primos_en_rango(${a}, ${b})</code> que use internamente <code>es_primo(n)</code>. Modulariza correctamente con docstrings.`,
+    code:`def es_primo(n: int) -> bool:\n    """Retorna True si n es primo."""\n    if n < 2: return False\n    i = 2\n    while i * i <= n:\n        if n % i == 0: return False\n        i += 1\n    return True\n\ndef primos_en_rango(a: int, b: int) -> list:\n    """Lista de primos entre a y b incluidos."""\n    resultado = []\n    n = a\n    while n <= b:\n        if es_primo(n):\n            resultado.append(n)\n        n += 1\n    return resultado\n\nprint(primos_en_rango(${a}, ${b}))`,
+    steps:[`<code>es_primo</code> revisa divisores hasta √n`,`<code>primos_en_rango</code> itera de ${a} a ${b} llamando <code>es_primo</code> en cada número`,`Primos encontrados: ${primes.length>0?primes.join(', '):'(ninguno)'}`,`Resultado: <strong>[${primes.join(', ')}]</strong>`],
+    out:`[${primes.join(', ')}]`
+  };
+},
+()=>{
+  const a=ri(1,60),b=ri(a+1,a+60),c=ri(1,60);
+  const mayor=Math.max(a,b,c);
+  return{
+    q:`Escribe <code>mayor_de_tres(${a}, ${b}, ${c})</code> con docstring que retorne el mayor de los tres. Solo usa <code>if/elif/else</code>.`,
+    code:`def mayor_de_tres(a: int, b: int, c: int) -> int:\n    """Retorna el mayor de tres números."""\n    if a >= b and a >= c:\n        return a\n    elif b >= a and b >= c:\n        return b\n    else:\n        return c\n\nprint(mayor_de_tres(${a}, ${b}, ${c}))  # ${mayor}`,
+    steps:[`a=${a}, b=${b}, c=${c}`,`¿${a} >= ${b} y ${a} >= ${c}? → ${a>=b&&a>=c}`,a>=b&&a>=c?`True → retorna <code>${a}</code>`:`¿${b} >= ${a} y ${b} >= ${c}? → ${b>=a&&b>=c}`,`Mayor: <strong>${mayor}</strong>`],
+    out:String(mayor)
+  };
+},
+()=>{
+  const n=ri(5,20);
+  const total=Array.from({length:n},(_,i)=>i+1).reduce((a,b)=>a+b,0);
+  return{
+    q:`Escribe <code>suma_hasta_n(${n})</code> que calcule 1 + 2 + 3 + ... + ${n} usando un <code>while</code> interno. Devuelve el resultado.`,
+    code:`def suma_hasta_n(n: int) -> int:\n    """Suma 1 + 2 + ... + n."""\n    suma = 0\n    i = 1\n    while i <= n:\n        suma += i\n        i += 1\n    return suma\n\nprint(suma_hasta_n(${n}))  # ${total}`,
+    steps:[`Empieza: <code>suma = 0, i = 1</code>`,`Suma acumulada: 0 + 1 + 2 + ... + ${n}`,`Fórmula verificación: <code>n×(n+1)/2 = ${n}×${n+1}/2 = ${total}</code>`,`Resultado: <strong>${total}</strong>`],
+    out:String(total)
+  };
+}];
+return ops[ri(0,ops.length-1)]();
+}},
+{id:5,lbl:"📚 Librerías y Listas",sub:"Sem 06",
+theory:`<p><strong>Librerías clave del Lab 06:</strong></p>
+<div class="g-pre">import math, random
+
+math.sqrt(25)         # 5.0
+math.pi               # 3.14159...
+math.floor(3.7)       # 3
+random.randint(1, 6)  # entero entre 1 y 6</div>
+<p style="margin-top:.75rem"><strong>Operaciones manuales con listas (sin built-ins):</strong></p>
+<div class="g-pre">notas = [8, 15, 12, 7, 18]
+
+# Suma manual (sin sum())
+total = 0
+for n in notas:
+    total += n
+
+# Máximo manual (sin max())
+maximo = notas[0]
+for n in notas:
+    if n > maximo:
+        maximo = n</div>`,
+tricks:["Para eliminar duplicados sin <code>set()</code>: crea lista vacía y añade solo si <code>elem not in nueva_lista</code>.","Rotar lista N posiciones a la izquierda: repite N veces <code>lista.append(lista.pop(0))</code>.","Para intercalar dos listas de igual tamaño, itera con índice: <code>[lista_a[i], lista_b[i]]</code> por cada i."],
+gen(){
+const ops=[
+()=>{
+  const notas=Array.from({length:ri(5,8)},()=>ri(5,20));
+  const prom=notas.reduce((a,b)=>a+b,0)/notas.length;
+  return{
+    q:`Dada la lista <code>${JSON.stringify(notas)}</code>, calcula promedio, máximo y mínimo <strong>sin usar</strong> <code>max()</code>, <code>min()</code>, <code>sum()</code>.`,
+    code:`notas = ${JSON.stringify(notas)}\n\ntotal = 0\nmaximo = notas[0]\nminimo = notas[0]\nfor n in notas:\n    total += n\n    if n > maximo: maximo = n\n    if n < minimo: minimo = n\n\npromedio = total / len(notas)\nprint(f"Prom:{round(promedio,2)} Max:{maximo} Min:{minimo}")`,
+    steps:[`Suma manual: ${notas.join(' + ')} = ${notas.reduce((a,b)=>a+b,0)}`,`Promedio: ${notas.reduce((a,b)=>a+b,0)} / ${notas.length} = <strong>${prom.toFixed(2)}</strong>`,`Máximo recorriendo: <strong>${Math.max(...notas)}</strong>`,`Mínimo recorriendo: <strong>${Math.min(...notas)}</strong>`],
+    out:`Prom:${prom.toFixed(2)} Max:${Math.max(...notas)} Min:${Math.min(...notas)}`
+  };
+},
+()=>{
+  const lista=Array.from({length:ri(5,9)},()=>ri(1,15));
+  const pares=lista.filter(x=>x%2===0);
+  return{
+    q:`Dada la lista <code>${JSON.stringify(lista)}</code>, crea una nueva con solo los números pares. Sin list comprehension.`,
+    code:`lista = ${JSON.stringify(lista)}\npares = []\ni = 0\nwhile i < len(lista):\n    if lista[i] % 2 == 0:\n        pares.append(lista[i])\n    i += 1\nprint(pares)`,
+    steps:[`Revisamos cada elemento: ${lista.map(x=>`${x}(${x%2===0?'✓':'✗'})`).join(' ')}`,`Los marcados con ✓ son pares`,`Lista resultante: <strong>${JSON.stringify(pares)}</strong>`,`Longitud: ${pares.length} elementos pares de ${lista.length}`],
+    out:JSON.stringify(pares)
+  };
+},
+()=>{
+  const base=[ri(1,5),ri(1,5),ri(1,5),ri(1,5)];
+  const lista=[...base,...base.slice(0,2),base[0]].sort(()=>Math.random()-.5);
+  const sinDup=[...new Set(lista)];
+  return{
+    q:`Dada la lista <code>${JSON.stringify(lista)}</code>, elimina duplicados <strong>sin usar</strong> <code>set()</code>. Mantén el orden de aparición.`,
+    code:`lista = ${JSON.stringify(lista)}\nnueva = []\nfor elem in lista:\n    if elem not in nueva:\n        nueva.append(elem)\nprint(nueva)`,
+    steps:[`Recorremos elemento a elemento`,`Por cada elem: si NO está en <code>nueva</code> → lo añadimos`,`Duplicados ignorados: ${lista.filter((x,i)=>lista.indexOf(x)!==i).join(', ')||'(verificar manualmente)'}`,`Resultado: <strong>${JSON.stringify(sinDup)}</strong>`],
+    out:JSON.stringify(sinDup)
+  };
+}];
+return ops[ri(0,ops.length-1)]();
+}},
+{id:6,lbl:"🧮 Comprensión y Matrices",sub:"Sem 07",
+theory:`<p><strong>List comprehension</strong> — forma Pythónica de construir listas:</p>
+<div class="g-pre">[expresion for elem in iterable if condicion]
+
+# Celsius → Fahrenheit
+temps_f = [c*9/5 + 32 for c in [0, 20, 37, 100]]
+# [32.0, 68.0, 98.6, 212.0]
+
+# Solo pares del 0 al 20
+pares = [x for x in range(21) if x % 2 == 0]</div>
+<p style="margin-top:.75rem"><strong>Matrices 2D — Transponer y crear identidad:</strong></p>
+<div class="g-pre"># Transponer NxM
+T = [[M[j][i] for j in range(rows)] for i in range(cols)]
+
+# Identidad NxN
+I = [[1 if i==j else 0 for j in range(n)] for i in range(n)]</div>`,
+tricks:["Lee comprensión de adentro hacia afuera: primero el <code>for</code>, luego el <code>if</code>, luego la expresión.","Para aplanar lista de listas: <code>[e for sub in lista for e in sub]</code> — dos <code>for</code> en la comprensión.","La transpuesta: T[i][j] = M[j][i]. Las filas se convierten en columnas y viceversa."],
+gen(){
+const ops=[
+()=>{
+  const cs=Array.from({length:ri(4,7)},()=>ri(-10,40));
+  const fs=cs.map(c=>parseFloat((c*9/5+32).toFixed(1)));
+  return{
+    q:`Convierte <code>${JSON.stringify(cs)}</code> de Celsius a Fahrenheit con list comprehension. F = C × 9/5 + 32.`,
+    code:`temps_c = ${JSON.stringify(cs)}\ntemps_f = [round(c * 9/5 + 32, 1) for c in temps_c]\nprint(temps_f)`,
+    steps:[`Comprensión: para cada <code>c</code> calcula <code>c × 9/5 + 32</code>`,...cs.slice(0,3).map((c,i)=>`<code>${c}°C → ${c}×1.8+32 = ${fs[i]}°F</code>`),`Resultado: <strong>${JSON.stringify(fs)}</strong>`],
+    out:JSON.stringify(fs)
+  };
+},
+()=>{
+  const n=ri(2,4);
+  const M=Array.from({length:n},()=>Array.from({length:n},()=>ri(1,9)));
+  const T=M[0].map((_,i)=>M.map(r=>r[i]));
+  return{
+    q:`Transpón la matriz ${n}×${n}:<br><code>${M.map(r=>JSON.stringify(r)).join('&nbsp;&nbsp;')}</code><br>Usa list comprehension anidada.`,
+    code:`M = ${JSON.stringify(M)}\nT = [[M[j][i] for j in range(${n})] for i in range(${n})]\nfor fila in T:\n    print(fila)`,
+    steps:[`Transponer = T[i][j] = M[j][i]`,`Comprensión externa itera i (columnas de M), interna itera j (filas de M)`,`Original:\n${M.map(r=>JSON.stringify(r)).join('\n')}`,`Transpuesta:\n${T.map(r=>JSON.stringify(r)).join('\n')}`],
+    out:T.map(r=>JSON.stringify(r)).join('\n')
+  };
+},
+()=>{
+  const n=ri(2,5);
+  const I=Array.from({length:n},(_,i)=>Array.from({length:n},(_,j)=>i===j?1:0));
+  return{
+    q:`Genera la matriz identidad ${n}×${n} con list comprehension anidada. La diagonal principal tiene 1s, el resto 0s.`,
+    code:`n = ${n}\nI = [[1 if i == j else 0 for j in range(n)] for i in range(n)]\nfor fila in I:\n    print(fila)`,
+    steps:[`Comprensión externa: i de 0 a ${n-1} (filas)`,`Comprensión interna: j de 0 a ${n-1} → si i==j → 1, sino → 0`,`La diagonal es donde i == j`,`Resultado:\n${I.map(r=>JSON.stringify(r)).join('\n')}`],
+    out:I.map(r=>JSON.stringify(r)).join('\n')
+  };
+}];
+return ops[ri(0,ops.length-1)]();
+}},
+{id:7,lbl:"🏆 Integradores EC1",sub:"Sem 08",
+theory:`<p>Los ejercicios EC1 combinan todos los temas. Estrategia: DESCOMPONER en funciones pequeñas.</p>
+<div class="g-pre">def estadisticas(notas: list) -> dict:
+    """Promedio, max, min y aprobados de lista."""
+    total = sum(notas)
+    aprobados = [n for n in notas if n >= 11]
+    return {
+        "promedio": round(total/len(notas), 2),
+        "maximo": max(notas),
+        "minimo": min(notas),
+        "aprobados": len(aprobados)
+    }</div>
+<p style="margin-top:.75rem"><strong>Anagrama:</strong></p>
+<div class="g-pre">def anagrama(a: str, b: str) -> bool:
+    return sorted(a.lower()) == sorted(b.lower())</div>
+<p style="margin-top:.75rem"><strong>Pregunta 4 — Solución Lab 2:</strong></p>
+<div class="g-pre">def pregunta_4(numero, digito):
+    contador = 0
+    while numero > 0:
+        if numero % 10 == digito:
+            contador += 1
+        numero = numero // 10
+    return contador</div>`,
+tricks:["Para anagrama: ordena ambas strings con <code>sorted()</code>. Si son iguales → anagramas.","Pregunta 2 Lab 2: punto en anillo entre radios 4 y 6 → <code>16 &lt;= x²+y² &lt;= 36</code>.","Simulación de dados: <code>random.randint(1,6) + random.randint(1,6)</code> da suma 2–12. Usa diccionario para frecuencias."],
+gen(){
+const ops=[
+()=>{
+  const notas=Array.from({length:ri(5,10)},()=>ri(5,20));
+  const prom=notas.reduce((a,b)=>a+b,0)/notas.length;
+  const aprobados=notas.filter(n=>n>=11).length;
+  return{
+    q:`Analiza <code>${JSON.stringify(notas)}</code>: calcula promedio, máximo, mínimo y cuenta aprobados (≥11). Modulariza en 4 funciones separadas con docstrings.`,
+    code:`def promedio(n): return round(sum(n)/len(n), 2)\ndef maximo(n): return max(n)\ndef minimo(n): return min(n)\ndef aprobados(n): return len([x for x in n if x >= 11])\n\nnotas = ${JSON.stringify(notas)}\nprint(f"Prom: {promedio(notas)}")\nprint(f"Max: {maximo(notas)}")\nprint(f"Min: {minimo(notas)}")\nprint(f"Aprobados: {aprobados(notas)}/{len(notas)}")`,
+    steps:[`Suma: ${notas.reduce((a,b)=>a+b,0)} / ${notas.length} = Promedio: <strong>${prom.toFixed(2)}</strong>`,`Máximo: <strong>${Math.max(...notas)}</strong>`,`Mínimo: <strong>${Math.min(...notas)}</strong>`,`Aprobados (≥11): ${notas.filter(n=>n>=11).join(', ')||'ninguno'} → <strong>${aprobados}/${notas.length}</strong>`],
+    out:`Prom:${prom.toFixed(2)} Max:${Math.max(...notas)} Min:${Math.min(...notas)} Aprob:${aprobados}`
+  };
+},
+()=>{
+  const pares=[["amor","roma"],["listen","silent"],["python","typhon"],["casa","saco"],["raton","torna"],["hello","world"]];
+  const [a,b]=pares[ri(0,pares.length-1)];
+  const esA=[...a].sort().join('')===[...b].sort().join('');
+  return{
+    q:`Escribe <code>anagrama("${a}", "${b}")</code> — ¿son anagramas "${a}" y "${b}"?`,
+    code:`def anagrama(a: str, b: str) -> bool:\n    """True si a y b tienen las mismas letras."""\n    return sorted(a.lower()) == sorted(b.lower())\n\nprint(anagrama("${a}", "${b}"))  # ${esA}`,
+    steps:[`<code>sorted("${a}")</code> = ${JSON.stringify([...a].sort())}`,`<code>sorted("${b}")</code> = ${JSON.stringify([...b].sort())}`,`¿Iguales? → <code>${esA}</code>`,`"${a}" y "${b}" <strong>${esA?"SÍ son":"NO son"} anagramas</strong>`],
+    out:String(esA)
+  };
+},
+()=>{
+  const num=ri(1000,9999);const dig=ri(0,9);
+  let cnt=0,tmp=num;
+  while(tmp>0){if(tmp%10===dig)cnt++;tmp=Math.floor(tmp/10);}
+  return{
+    q:`Escribe <code>pregunta_4(${num}, ${dig})</code> — cuenta cuántas veces aparece el dígito <strong>${dig}</strong> en el número ${num}.`,
+    code:`def pregunta_4(numero: int, digito: int) -> int:\n    """Cuenta apariciones de digito en numero."""\n    contador = 0\n    while numero > 0:\n        if numero % 10 == digito:\n            contador += 1\n        numero = numero // 10\n    return contador\n\nprint(pregunta_4(${num}, ${dig}))  # ${cnt}`,
+    steps:[`Dígitos de ${num}: ${String(num).split('').join(', ')}`,`Extraemos con <code>% 10</code> de derecha a izquierda`,`Veces que aparece ${dig}: <strong>${cnt}</strong>`,`Patrón: igual que el ejercicio del Lab 2 (Solución4B/solution.py)`],
+    out:String(cnt)
+  };
+}];
+return ops[ri(0,ops.length-1)]();
+}}
+];
+
+let cur=0,ex=null,sol=false;
+
+function renderTabs(){
+  document.getElementById('gtabs').innerHTML=TOPICS.map((t,i)=>
+    `<button class="g-tab ${i===cur?'on':''}" onclick="sel(${i})">${t.lbl} <span style="font-size:10px;opacity:.65">${t.sub}</span></button>`
+  ).join('');
+  document.getElementById('gprog').style.width=((cur+1)/TOPICS.length*100)+'%';
+}
+
+function newEx(){sol=false;ex=TOPICS[cur].gen();renderMain();}
+function toggleSol(){sol=!sol;renderMain();}
+function sel(i){cur=i;sol=false;ex=TOPICS[i].gen();renderTabs();renderMain();}
+
+function renderMain(){
+  const t=TOPICS[cur];
+  document.getElementById('gcontent').innerHTML=`
+    <div class="g-card">
+      <div class="g-label">Teoría — ${t.lbl}</div>
+      <div class="g-theory">${t.theory}</div>
+    </div>
+    <div class="g-card">
+      <div class="g-label">Trucos del profe</div>
+      ${t.tricks.map(x=>`<div class="g-trick">💡 ${x}</div>`).join('')}
+    </div>
+    <div class="g-card">
+      <div class="g-label">Ejercicio</div>
+      <div class="g-exbox">${ex.q}</div>
+      <div class="g-btns">
+        <button onclick="toggleSol()">${sol?'🙈 Ocultar solución':'💡 Ver solución'}</button>
+        <button onclick="newEx()">🎲 Nuevo ejercicio ↗</button>
+      </div>
+      ${sol?`<div class="g-sol">
+        <div class="g-slabel">Código solución</div>
+        <div class="g-pre">${ex.code}</div>
+        <div class="g-slabel">Explicación paso a paso</div>
+        <div class="g-steps">${ex.steps.map((s,i)=>`<div class="g-step"><div class="g-num">${i+1}</div><div class="g-stxt">${s}</div></div>`).join('')}</div>
+        <div class="g-out"><span>✓</span> Salida esperada: <code>${ex.out}</code></div>
+      </div>`:''}
+    </div>`;
+}
+
+ex=TOPICS[0].gen();
+renderTabs();
+renderMain();
+</script>
