@@ -1,62 +1,246 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Guía interactiva — Programación I CS6002 UTEC</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CS6002 · Guía Interactiva · Programación I · UTEC</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --color-background-primary:#ffffff;
-  --color-background-secondary:#f7f6f3;
-  --color-background-info:#e7f3f8;
-  --color-background-warning:#fdecc8;
-  --color-background-success:#dbeddb;
-  --color-text-primary:#37352f;
-  --color-text-secondary:#787774;
-  --color-text-info:#0b6e99;
-  --color-text-warning:#cb912f;
-  --color-text-success:#448361;
-  --color-border-tertiary:#e9e9e7;
-  --color-border-secondary:#d3d1cb;
-  --color-border-info:#b3d4e0;
-  --color-border-warning:#e8c777;
+  --bg:#0a0a0f;
+  --panel:#111118;
+  --panel2:#0e0e1a;
+  --border:#1e1e2e;
+  --accent:#7c6af7;
+  --accent2:#f76af7;
+  --green:#4af7a8;
+  --yellow:#f7d16a;
+  --red:#f76a7c;
+  --text:#e8e8f0;
+  --muted:#7070a0;
+  --mono:'Space Mono',monospace;
+  --sans:'DM Sans',sans-serif;
+
+  /* mapeo a las variables que usa el fragmento embebido */
+  --color-background-primary:var(--panel);
+  --color-background-secondary:var(--panel2);
+  --color-background-info:#1a1430;
+  --color-background-warning:#2a2010;
+  --color-background-success:#0a1a12;
+  --color-text-primary:var(--text);
+  --color-text-secondary:var(--muted);
+  --color-text-info:var(--accent);
+  --color-text-warning:var(--yellow);
+  --color-text-success:var(--green);
+  --color-border-tertiary:var(--border);
+  --color-border-secondary:#2a2a3a;
+  --color-border-info:var(--accent);
+  --color-border-warning:var(--yellow);
   --border-radius-md:6px;
   --border-radius-lg:10px;
-  --font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --font-mono:var(--mono);
 }
-@media (prefers-color-scheme: dark){
-  :root{
-    --color-background-primary:#191919;
-    --color-background-secondary:#252525;
-    --color-background-info:#1e3a4a;
-    --color-background-warning:#3a2f1a;
-    --color-background-success:#1e3a28;
-    --color-text-primary:#e8e6e3;
-    --color-text-secondary:#9b9a97;
-    --color-text-info:#7fb6d6;
-    --color-text-warning:#e0a85a;
-    --color-text-success:#7eb495;
-    --color-border-tertiary:#373737;
-    --color-border-secondary:#4a4a4a;
-    --color-border-info:#2a5a73;
-    --color-border-warning:#5a4720;
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.7;
+  min-height:100vh;
 }
-*,*::before,*::after{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--color-background-primary);color:var(--color-text-primary);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-.page{max-width:900px;margin:0 auto;padding:2.5rem 2rem 4rem}
-.page h1{font-size:32px;font-weight:700;margin:0 0 .5rem;line-height:1.2}
-.page > .lead{font-size:14px;color:var(--color-text-secondary);margin:0 0 2rem}
+header{
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  padding:18px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:100;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.05em}
+.logo span{color:var(--muted)}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--panel2);
+  border:1px solid var(--border);border-radius:6px;
+  padding:6px 14px;
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+}
+.badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.main{max-width:960px;margin:0 auto;padding:32px 20px 80px}
+.intro{
+  background:linear-gradient(135deg,#1a1430 0%,#0e0e1a 100%);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:28px 32px;
+  margin-bottom:28px;
+}
+.intro h1{
+  font-size:28px;font-weight:700;margin-bottom:8px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.intro p{color:#c0c0d8;font-size:14px;margin:0}
+.intro .meta{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.intro .meta span{font-family:var(--mono);font-size:10px;color:var(--muted);background:var(--panel2);border:1px solid var(--border);padding:4px 10px;border-radius:4px;letter-spacing:.05em}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-button{font-family:inherit}
-.g-tab{font-family:inherit}
-@media (max-width:600px){.page{padding:1.25rem 1rem 3rem}.page h1{font-size:24px}}
+
+/* Override fragment styles para el look dark */
+.g-wrap{padding:0}
+.g-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.g-tab{
+  padding:7px 14px;
+  background:none;
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-family:var(--mono);
+  font-size:11px;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all .15s;
+  letter-spacing:.05em;
+  line-height:1.4;
+}
+.g-tab:hover:not(.on){border-color:var(--accent);color:var(--accent)}
+.g-tab.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+.g-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:24px;
+  margin-bottom:16px;
+}
+.g-label,.g-slabel{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin:0 0 14px;
+  font-weight:500;
+}
+.g-slabel{margin:18px 0 10px;color:var(--yellow)}
+.g-theory{font-size:14.5px;line-height:1.75;color:#c0c0d8}
+.g-theory p{margin:0 0 10px;color:#c0c0d8}
+.g-theory strong{color:var(--text)}
+.g-theory code{font-family:var(--mono);font-size:12.5px;background:var(--panel2);padding:1px 6px;border-radius:3px;color:var(--accent)}
+.g-pre{
+  font-family:var(--mono);
+  font-size:12.5px;
+  background:var(--panel2);
+  border-left:3px solid var(--accent);
+  border-radius:0 6px 6px 0;
+  padding:12px 16px;
+  overflow-x:auto;
+  line-height:1.7;
+  margin:10px 0;
+  white-space:pre;
+  color:#c0f0ff;
+}
+.g-trick{
+  border-left:3px solid var(--yellow);
+  border-radius:0 6px 6px 0;
+  padding:11px 16px;
+  background:#2a2010;
+  margin-bottom:8px;
+  font-size:13.5px;
+  line-height:1.65;
+  color:#fff0c0;
+}
+.g-trick code{font-family:var(--mono);font-size:12px;background:rgba(0,0,0,.3);padding:1px 5px;border-radius:3px;color:var(--yellow)}
+.g-exbox{
+  background:var(--panel2);
+  border-left:3px solid var(--accent2);
+  border-radius:0 6px 6px 0;
+  padding:14px 18px;
+  margin-bottom:14px;
+  font-size:14.5px;
+  line-height:1.7;
+  color:var(--text);
+}
+.g-exbox code{font-family:var(--mono);font-size:12.5px;color:var(--accent2)}
+.g-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.g-btns button,.g-btns .g-btn{
+  background:none;
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-family:var(--mono);
+  font-size:11px;
+  padding:7px 14px;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all .15s;
+  letter-spacing:.05em;
+}
+.g-btns button:hover,.g-btns .g-btn:hover{border-color:var(--accent);color:var(--accent)}
+.g-sol{margin-top:18px;padding-top:16px;border-top:1px dashed var(--border)}
+.g-steps{margin:14px 0 0;counter-reset:step}
+.g-step{
+  display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;
+}
+.g-num{
+  min-width:24px;height:24px;border-radius:6px;
+  background:var(--panel2);
+  color:var(--accent);
+  border:1px solid var(--border);
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.g-stxt{font-size:13.5px;line-height:1.7;color:#c0c0d8}
+.g-stxt code{font-family:var(--mono);font-size:12px;background:var(--panel2);padding:1px 6px;border-radius:3px;color:var(--accent)}
+.g-out{
+  background:#0a1a12;
+  border:1px solid var(--green);
+  border-radius:6px;
+  padding:11px 16px;
+  margin-top:12px;
+  display:flex;align-items:center;gap:10px;
+  font-size:13.5px;color:var(--green);font-weight:500;
+  font-family:var(--mono);
+}
+.g-out code{font-family:var(--mono);font-size:12.5px;color:var(--green);background:none;padding:0}
+.g-prog{
+  height:4px;background:var(--border);border-radius:2px;
+  margin-bottom:24px;overflow:hidden;
+}
+.g-fill{
+  height:100%;border-radius:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .35s ease;
+  box-shadow:0 0 12px var(--accent);
+}
+@media (max-width:640px){
+  header{padding:14px 18px}
+  .main{padding:20px 14px 60px}
+  .intro{padding:20px}
+  .intro h1{font-size:22px}
+  .g-card{padding:18px}
+}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
 </style>
 </head>
 <body>
-<div class="page">
-<h1>📚 Guía interactiva — Programación I</h1>
-<p class="lead">CS6002 · UTEC · Práctica con ejercicios que cambian en cada intento</p>
+<header>
+  <div class="logo">CS6002 <span>· UTEC</span></div>
+  <div class="badge"><span class="dot"></span>GUÍA INTERACTIVA · S01–S08</span></div>
+</header>
+<main class="main">
+  <div class="intro">
+    <h1>Programación I — Guía Interactiva</h1>
+    <p>Variables, lógica, funciones, while y más. Cada ejercicio se regenera con datos nuevos en cada intento, con resolución paso a paso.</p>
+    <div class="meta">
+      <span>PYTHON 3</span><span>UTEC</span><span>PROFA. BERMEJO</span><span>EJERCICIOS DINÁMICOS</span>
+    </div>
+  </div>
 
 <h2 class="sr-only">Guía interactiva de estudio — Programación I CS6002 UTEC</h2>
 <style>
@@ -588,6 +772,6 @@ renderTabs();
 renderMain();
 </script>
 
-</div>
+</main>
 </body>
 </html>
